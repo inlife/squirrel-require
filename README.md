@@ -51,7 +51,7 @@ local require = dofile("./squirrel-require/src/require.nut", true)();
 local mymodule = require("./mymodule");
 
 // do stuff
-print( mymodule.hello() );
+print( mymodule.hello("world") );
 ```
 
 ## Usage
