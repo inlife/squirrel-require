@@ -54,9 +54,7 @@ local mymodule = require("./mymodule");
 print( mymodule.hello("world") );
 ```
 
-## Usage
-
-
+You can look at more examples at examples/ dir.
 
 ## License
 

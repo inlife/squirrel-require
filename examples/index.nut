@@ -14,7 +14,7 @@ local adder = require("./add");
 local other = require("./other");
 
 // // oh, also we have console.log now, yay
-console.log(adder(5, 10));
+console.log("the result of add:", adder(5, 10));
 
 // // and submodules
 console.log(other.foo());

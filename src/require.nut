@@ -213,7 +213,7 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
             console = {
                 log = function(...) {
                     ::print(vargv.reduce(function(a, b) {
-                        return a + b;
+                        return a + " " + b;
                     }) + "\n");
                 },
             },
