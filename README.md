@@ -7,7 +7,17 @@ Even if you are using dofile/loadfile at some point you will probably find yours
 ## Purpose
 
 Create simple, and working alternative to Node.js realization of CommonJS for squirrel lang.
-This library allows you to use all beatuty of modular concepts that you \*might probably\* used to while writing on Node.js.
+This library allows you to use all beauty of modular concepts that you \*might probably\* used to while writing on Node.js.
+
+## Features
+
+* It can load modules in *multiple ways*: filename w/o extension, filename w/ extension, directory name with index.nut file, and even via module name from squirrel_modules directory.
+* It is *isolated*! (you can easily define some global functions or variables inside module, but they wont be visible to any other module).
+* It comes with builtin `"path"` core library, which is kinda similar to one, used in Node.js.
+* It *caches* modules and resolves *cyclic requires*, so no worries about that.
+* It suppors *multiple exports* from same module, via `module.exports`
+
+As you see most of the features, are similar to Node.js's require.
 
 ## Installation
 
@@ -50,4 +60,4 @@ print( mymodule.hello() );
 
 ## License
 
-Look [LICENSE.md]()
+Look [LICENSE.md](LICENSE.md)
