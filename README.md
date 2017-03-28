@@ -35,7 +35,7 @@ local require = dofile("./squirrel-require/src/require.nut", true)();
 
 module.exports = {
     hello = function(text) {
-        print("Hello" + text + "\n");
+        print("Hello " + text + "\n");
     },
 };
 

@@ -126,6 +126,7 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
         load        = null,
         generate    = null,
         core_lib    = null,
+        bind_env    = null,
     };
 
     /**
@@ -178,6 +179,18 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
     };
 
     /**
+     * Bind native module env to main env
+     * @param  {Table} env
+     */
+    require.bind_env = function(env) {
+        local tbl = getroottable();
+
+        foreach (idx, value in env) {
+            tbl[idx] <- value;
+        }
+    };
+
+    /**
      * Create environment for new required module
      * @param  {String} filepath
      * @param  {Table} module_parent
@@ -197,9 +210,25 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
             __filename = filepath,
             require = null,
             exports = null,
-            console = { log = function(text) {::print(text + "\n")} },
-            process = {},
+            console = {
+                log = function(...) {
+                    ::print(vargv.reduce(function(a, b) {
+                        return a + b;
+                    }) + "\n");
+                },
+            },
+            process = {
+                stdin   = stdin,
+                stderr  = stderr,
+                stdout  = stdout,
+                version = _version_,
+            },
         };
+
+        if (filepath == "native_require") {
+            environment.module.dirname = "./";
+            environment.__dirname = "./";
+        }
 
         if (module_parent) {
             module_parent.children.push(environment.module);
@@ -257,6 +286,11 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
      * Registering native core libs
      */
     require.core_lib("path", path);
+
+    /**
+     * Registering native env for main lib
+     */
+    require.bind_env(require.create_env("native_require", null));
 
     /**
      * Exporting single public method
