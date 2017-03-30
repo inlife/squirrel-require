@@ -19,6 +19,10 @@ This library allows you to use all beauty of modular concepts that you \*might p
 
 As you see most of the features, are similar to Node.js's require.
 
+Separate modules, in lets say `squirrel_modules` dir with package.json or package.nut inside a folder named after module title.
+This package.* file should contain almost same information as npm's package.json does.
+You can look example for this in `examples/` folder.
+
 ## Installation
 
 1. Download or clone repository. Or just copy file src/require.nut, its up to you.
@@ -55,6 +59,7 @@ print( mymodule.hello("world") );
 ```
 
 You can look at more examples at examples/ dir.
+
 
 ## License
 

@@ -153,6 +153,7 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
         generate    = null,
         core_lib    = null,
         bind_env    = null,
+        load_package = null,
     };
 
     /**
@@ -172,7 +173,7 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
             path.resolve(dirname, name + ".nut"),
             path.resolve(dirname, name, "index.nut"),
             path.resolve(dirname, name),
-            // path.resolve(module_dir, name, "package.json"),
+            path.resolve(module_dir, name, "package.json"),
         ];
 
         foreach (idx, filepath in places) {
@@ -267,6 +268,28 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
     };
 
     /**
+     * Load package file from path and return a table
+     * @param  {String} filepath
+     * @return {Table}
+     */
+    require.load_package = function(filepath) {
+        local handle  = file(filepath, "r");
+        local content = "";
+
+        for (local i = 0; i < handle.len(); i++) {
+            content += handle.readn('b').tochar();
+        }
+
+        local table = compilestring(format("return %s;", content))();
+
+        if (!("main" in table)) {
+            throw "require: no 'main' in package.json at: " + filepath;
+        }
+
+        return table;
+    };
+
+    /**
      * Try to load module or and handle loading error
      * (sytax errors mostly)
      * @param  {String} filepath
@@ -277,7 +300,7 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
             loadfile(filepath, true).call(env);
         }
         catch (e) {
-            ::print(e);
+            ::print(e + "\n");
         }
     };
 
@@ -289,20 +312,26 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
     require.generate = function(module_parent = null) {
         return function(module_path) {
             local filepath = require.resolve(module_path, module_parent)
+            local modulekey = filepath;
 
-            if (!filepath) {
+            if (!modulekey) {
                 throw "require: Cannot find module: " + module_path;
             }
 
-            if (!(filepath in require.cache)) {
+            if (!(modulekey in require.cache)) {
                 local module_env = require.create_env(filepath, module_parent);
-                require.cache[filepath] <- module_env.module;
+                require.cache[modulekey] <- module_env.module;
+
+                if (endswith(filepath, "package.json")) {
+                    local package = require.load_package(filepath);
+                    filepath = path.resolve(path.dirname(filepath), package.main);
+                }
 
                 require.load(filepath, module_env);
                 module_env.module.loaded = true;
             }
 
-            local module = require.cache[filepath];
+            local module = require.cache[modulekey];
 
             return module.exports;
         }
