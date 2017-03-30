@@ -1,3 +1,29 @@
+if (!("startswith" in getroottable())) {
+    startswith <- function(str, cmp) {
+        if (str.len() < cmp.len()) {
+            return false;
+        }
+
+        for (local i = 0; i < cmp.len(); i++) {
+            if (str[i] != cmp[i]) return false;
+        }
+
+        return true;
+    };
+
+    endswith <- function(str, cmp) {
+        if (str.len() < cmp.len()) {
+            return false;
+        }
+
+        for (local i = 0; i < cmp.len(); i++) {
+            if (str[str.len() - 1 - i] != cmp[cmp.len() - 1 - i]) return false;
+        }
+
+        return true;
+    };
+}
+
 /**
  * Path library for sq
  * similar to node.js path lib
