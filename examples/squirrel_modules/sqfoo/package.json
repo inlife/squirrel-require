@@ -1,14 +1,10 @@
 {
-    "name": "squirrel-orm",
+    "name": "sqfoo",
     "version": "1.0.0",
-    "description": "Simple ORM for squirrel lang.",
+    "description": "sqfoo description",
     "main": "index.nut",
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com/inlife/squirrel-orm.git"
-    },
+    "repository": {},
     "author": "inlife",
     "license": "MIT",
-    "homepage": "https://github.com/inlife/squirrel-orm",
     "dependencies": {}
 }
