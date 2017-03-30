@@ -1,3 +1,6 @@
+/**
+ * Polyfill for startswith and endswith methods
+ */
 if (!("startswith" in getroottable())) {
     startswith <- function(str, cmp) {
         if (str.len() < cmp.len()) {
