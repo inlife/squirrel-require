@@ -60,6 +60,30 @@ print( mymodule.hello("world") );
 
 You can look at more examples at examples/ dir.
 
+## Documentation
+
+As soon as you attach squirrel-require to your project, your file global namespace becomes populated with several tables/methods:
+
+* `__dirname` - relative directory of the current file (calculated is based on option of the attaching: dofile(...)("THIS_ARGUMENT"))
+* `__filename` - relative filepath of the current file, (calculated same way as above)
+* `require` - method for including modules
+* `globals` - table contaning all current global members (can be defined inside submodule, and be available at the top)
+* `console` - table
+* * `log` - method for logging various data of plain types
+* `module` - table (current module)
+* * `loaded` - boolean representing whether or not this module've been loaded
+* * `exports` - table of exporting values, any given to export data should be put there
+* * `parent` - reference to the parent module (the one who required this module first)
+* * `children` - array of child modules (required by this module)
+* * `dirname` - alias of `__dirname`
+* * `filename` - alias of `__filename`
+* `process` - table
+* * `stdin` - stdin stream (alias of the default global `stdin`)
+* * `stdout` - stdout stream (alias of the default global `stdout`)
+* * `stderr` - stderr stream (alias of the default global `stderr`)
+* * `version` - version string (alias of the default global `_version_`)
+
+All these tables/methods will be automatically inserted(binded) into child modules on their require time.
 
 ## License
 
