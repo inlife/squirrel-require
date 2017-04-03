@@ -47,11 +47,6 @@ module.exports = {
 
 ```js
 // main.nut
-
-// load require js
-local require = dofile("./squirrel-require/src/require.nut", true)();
-
-// load modules
 local mymodule = require("./mymodule");
 
 // do stuff
