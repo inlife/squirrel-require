@@ -141,15 +141,22 @@ path.resolve = function(...) {
  * Require library for squirrel
  * should be included via dofile, and called only once
  *
- * @param  {String}  root       root folder for require (for source code)
- * @param  {String}  module_dir module dir for require (for 3rd party modules)
- * @param  {Boolean} debug      setup debug mode
+ * @param  {Table}   config {
+ *      {String}  root       root folder for require (for source code)
+ *      {String}  module_dir module dir for require (for 3rd party modules)
+ *      {Table}   aliases    object with key = value for aliases
+ *      {Boolean} debug      setup debug mode
+ * }
  * @return {Function}           require method
  */
-return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
+return function(config) {
+    local root        = ("root" in config) ? config.root : "./";
+    local debug       = ("debug" in config) ? config.debug : false;
+    local aliases     = ("aliases" in config) ? config.aliases : {};
+    local module_dir  = ("module_dir" in config) ? config.module_dir : "./squirrel_modules";
 
     local require = {
-        cache = {},
+        cache       = {},
         resolve     = null,
         create_env  = null,
         load        = null,
@@ -180,12 +187,24 @@ return function(root = "./", module_dir = "./squirrel_modules", debug = false) {
         ];
 
         foreach (idx, filepath in places) {
-            if (debug) {
-                print(format("looking for module '%s' at: %s - %d\n", name, filepath, path.exists(filepath)));
-            }
+            if (debug) print(format("looking for module '%s' at: %s - %d\n", name, filepath, path.exists(filepath)));
+
 
             if (path.exists(filepath)) {
                 return filepath;
+            }
+        }
+
+        foreach (idx, filepath in aliases) {
+            if (debug) print(format("looking module '%s' against alias '%s'\n", name, idx));
+
+            if (idx == name.slice(0, idx.len())) {
+                if (debug) print(format("found aliast match at path '%s'\n", filepath));
+
+                name = name.slice(idx.len());
+                name = name.slice(0, 1) == "/" ? name.slice(1) : name;
+
+                return require.resolve(name, { dirname = filepath });
             }
         }
 
