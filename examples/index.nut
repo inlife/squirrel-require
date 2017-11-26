@@ -10,11 +10,18 @@
  * Also you can set up squirrel_modules directory (or whatever name you can choose)
  * this folder should be used same way node_modules are used
  */
-local require = dofile("./src/require.nut")("./examples", "./examples/squirrel_modules");
+local require = dofile("./src/require.nut")({
+    root        = "./examples",
+    module_dir  = "./examples/squirrel_modules",
+    aliases     = {
+        foo = "./examples/other"
+    }
+});
 
 // we can load file under different name
 local adder = require("./add");
 local other = require("./other");
+local andof = require("foo/bar.nut");
 local sqfoo = require("sqfoo");
 
 // // oh, also we have console.log now, yay
