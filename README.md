@@ -29,7 +29,13 @@ You can look example for this in `examples/` folder.
 2. Load that file at the beginning of your main squirrel script:
 
 ```js
-local require = dofile("./squirrel-require/src/require.nut", true)();
+local require = dofile("./squirrel-require/src/require.nut", {
+    debug: false,
+    aliases: {
+        engine = "./src/engine",
+        tests = "./tests/",
+    },
+})();
 ```
 
 3. Use it!
