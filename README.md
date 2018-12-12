@@ -30,8 +30,8 @@ You can look example for this in `examples/` folder.
 
 ```js
 local require = dofile("./squirrel-require/src/require.nut", {
-    debug: false,
-    aliases: {
+    debug = false,
+    aliases = {
         engine = "./src/engine",
         tests = "./tests/",
     },
