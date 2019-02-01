@@ -6,7 +6,7 @@ Even if you are using dofile/loadfile at some point you will probably find yours
 
 ## Purpose
 
-Create simple, and working alternative to Node.js realization of **CommonJS** for squirrel lang.
+Create simple, and working alternative to Node.js implementation of **CommonJS** for squirrel lang.
 This library allows you to use all beauty of modular concepts that you \*might probably\* used to while writing on Node.js.
 
 ## Features
